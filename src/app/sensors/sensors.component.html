@@ -1,0 +1,17 @@
+<div>
+<h2>Measurements</h2>
+<table>
+    <tr>
+     <th>sensor name</th>
+     <th>temperature</th>
+     <th>humidity</th>
+     <th>time</th>
+    </tr>
+    <tr *ngFor="let sensorMeasurementRepository of SensorMeasurementRepository">
+               <td>{{ sensorMeasurementRepository.latestMeasurement?.sensorname }}</td>
+               <td>{{ sensorMeasurementRepository.latestMeasurement?.temperature }}</td>
+               <td>{{ sensorMeasurementRepository.latestMeasurement?.humidity }}</td>
+               <td>{{ sensorMeasurementRepository.latestMeasurement?.time }}</td>
+    </tr>
+</table> 
+</div>

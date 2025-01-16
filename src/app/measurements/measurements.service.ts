@@ -11,8 +11,8 @@ export class MeasurementService {
 
   constructor(private http: HttpClient) { }
 
-  getAllMeasurements(): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(this.apiUrl);
+  getAllMeasurements(): Observable<Measurement[]> {
+    return this.http.get<Measurement[]>(this.apiUrl);
   }
 }
 

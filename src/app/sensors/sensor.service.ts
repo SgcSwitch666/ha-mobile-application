@@ -7,7 +7,7 @@ import { Sensor } from './sensors.component';
   providedIn: 'root'
 })
 export class SensorService {
-  private apiUrl = 'http://localhost:8081/api/sensors';
+  private apiUrl = 'http://192.168.0.104/api/sensors';
 
   constructor(private http: HttpClient) { }
 
