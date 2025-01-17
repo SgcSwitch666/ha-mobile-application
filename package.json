@@ -16,13 +16,14 @@
     "@angular/router": "~19.0.0",
     "@nativescript/angular": "^19.0.0",
     "@nativescript/core": "~8.8.0",
+    "lodash": "^4.17.21",
     "rxjs": "~7.8.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~19.0.0",
     "@angular/compiler-cli": "~19.0.0",
-    "@nativescript/preview-cli": "^1.0.14",
+    "@nativescript/preview-cli": "1.0.14",
     "@nativescript/stackblitz": "^0.0.8",
     "@nativescript/tailwind": "^2.1.0",
     "@nativescript/types": "~8.8.0",

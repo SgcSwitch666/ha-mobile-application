@@ -12,6 +12,10 @@ export class SensorService {
   constructor(private http: HttpClient) { }
 
   getAllSensors(): Observable<Sensor[]> {
+      const sensors =this.http.get<Sensor[]>(this.apiUrl);
+      console.log("getting sensors ");
     return this.http.get<Sensor[]>(this.apiUrl);
   }
+
+
 }

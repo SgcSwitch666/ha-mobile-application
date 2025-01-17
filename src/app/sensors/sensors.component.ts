@@ -6,6 +6,7 @@ import {SensorMeasurementRepository} from '../modules/sensorMeasurementRepositor
 import { Measurement } from '../measurements/measurements.component';
 import { forkJoin } from 'rxjs';
 import {MeasurementService} from '../measurements/measurements.service';
+import { cloneDeepWith } from 'lodash';
 
 @Component({
   selector: 'app-sensors',
@@ -29,8 +30,8 @@ export class SensorsComponent implements OnInit {
       console.log(sensors);
       console.log(measurements);
       this.SensorMeasurementRepository = this.mapSensorsToRepositories(sensors, measurements);
-    });
-  }
+      });
+  };
 
   private mapSensorsToRepositories(sensors: Sensor[], measurements: Measurement[]): SensorMeasurementRepository[] {
     return sensors.map(sensor => {
@@ -56,9 +57,9 @@ export class SensorsComponent implements OnInit {
   }
 
   private convertToDate(dateString: string): Date | null {
-  const [time, date] = dateString.split('-'); // Split into time and date
-  const [hours, minutes] = time.split(':');  // Split time into hours and minutes
-  const [day, month, year] = date.split('.'); // Split date into day, month, and year
+  const [time, date] = dateString.split('-');
+  const [hours, minutes] = time.split(':');
+  const [day, month, year] = date.split('.');
 
   // Build a string in the format `yyyy-mm-ddThh:mm:ss`
   const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours}:${minutes}:00`;
@@ -70,10 +71,12 @@ export class SensorsComponent implements OnInit {
   if (isNaN(dateObject.getTime())) {
     return null;  // Return null if the date is invalid
   }
-  
+
   return dateObject;
+   }
 }
-}
+
+
 
 export interface Sensor {
   sensorid: number;

@@ -20,10 +20,6 @@ export interface Measurement {
   measurementtime: string;
   measurementtemperature: number;
   measurementhumidity: number;
-  _links: {
-    self: { href: string };
-    measurement: { href: string };
-  };
 }
 
 export interface ApiResponse {

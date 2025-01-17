@@ -7,7 +7,7 @@ import { ApiResponse, Measurement } from './measurements.component';
   providedIn: 'root'
 })
 export class MeasurementService {
-  private apiUrl = 'http://localhost:8081/Measurements';
+  private apiUrl = 'http://192.168.0.104/Measurements';
 
   constructor(private http: HttpClient) { }
 
