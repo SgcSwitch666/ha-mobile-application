@@ -6,7 +6,6 @@ import {SensorMeasurementRepository} from '../modules/sensorMeasurementRepositor
 import { Measurement } from '../measurements/measurements.component';
 import { forkJoin } from 'rxjs';
 import {MeasurementService} from '../measurements/measurements.service';
-import { cloneDeepWith } from 'lodash';
 
 @Component({
   selector: 'app-sensors',
@@ -24,21 +23,34 @@ export class SensorsComponent implements OnInit {
     console.log("Loading data");
 
    forkJoin({
-      sensors: this.sensorService.getAllSensors(),
-      measurements: this.measurementService.getAllMeasurements(),
-    }).subscribe(({ sensors, measurements }) => {
-      console.log(sensors);
-      console.log(measurements);
-      this.SensorMeasurementRepository = this.mapSensorsToRepositories(sensors, measurements);
-      });
-  };
+     sensors: this.sensorService.getAllSensors(),
+     measurements: this.measurementService.getAllMeasurements(),
+   }).subscribe({
+     next: ({ sensors, measurements }) => {
+       //console.log('Sensors:', sensors);
+       //console.log('Measurements:', measurements);
+       this.SensorMeasurementRepository = this.mapSensorsToRepositories(
+         sensors,
+         measurements
+       );
+     },
+     error: (err) => {
+       console.error('Error loading data:', err);
+     },
+   });
+}
 
-  private mapSensorsToRepositories(sensors: Sensor[], measurements: Measurement[]): SensorMeasurementRepository[] {
-    return sensors.map(sensor => {
+
+  private mapSensorsToRepositories(
+    sensors: Sensor[],
+    measurementsData: any // Use `any` or a more specific type based on the actual structure
+  ): SensorMeasurementRepository[] {
+    const measurements: Measurement[] = measurementsData?._embedded?.Measurements || []; // Access the Measurements array
+    console.log("mapping sensors to repositories");
+    return sensors.map((sensor) => {
       const sensorMeasurements = measurements.filter(
-        measurement => measurement.sensorid === sensor.sensorid // Assuming measurements have a `sensorId` field
+        (measurement) => measurement.sensorid === sensor.sensorid
       );
-      //const l_Measurement = this.getLatestMeasurement(sensorMeasurements);
       return {
         sensorid: sensor.sensorid,
         sensorname: sensor.sensorname,
@@ -48,7 +60,7 @@ export class SensorsComponent implements OnInit {
     });
   }
 
-  // Find the latest measurement for a sensor
+
   private getLatestMeasurement(measurements: Measurement[]): Measurement | null {
     if (!measurements || measurements.length === 0) return null;
     return measurements.reduce((latest, current) =>
@@ -75,8 +87,6 @@ export class SensorsComponent implements OnInit {
   return dateObject;
    }
 }
-
-
 
 export interface Sensor {
   sensorid: number;

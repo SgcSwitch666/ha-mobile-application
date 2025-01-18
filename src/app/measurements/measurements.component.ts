@@ -8,10 +8,6 @@ import { Component } from '@angular/core';
 export class MeasurementsComponent {
   public measurements$: Measurement[] = [];
 
-  addSensorId = 0;
-  addMeasurementTime = '';
-  addMeasurementTemp = 0;
-  addMeasurementHumidity = 0;
 }
 
 export interface Measurement {
@@ -26,6 +22,4 @@ export interface ApiResponse {
   _embedded: {
     Measurements: Measurement[];
   };
-  _links: any;
-  page: any;
 }
