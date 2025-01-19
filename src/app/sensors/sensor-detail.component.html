@@ -1,0 +1,21 @@
+<Page>
+    <ActionBar title="MeasurementsDetails">
+    </ActionBar>
+
+    <StackLayout>
+        <Label text="Latest 10 Measurements:" fontSize="20" fontWeight="Bold" horizontalAlignment="center"></Label>
+        <ListView [items]="last10Measurements">
+            <ng-template let-item="item">
+                <StackLayout>
+                    <Label [text]="item.measurementtemperature + '°C'"></Label>
+                    <Label [text]="item.measurementhumidity + '%'"></Label>
+                    <Label [text]="item.measurementtime"></Label>
+                </StackLayout>
+            </ng-template>
+        </ListView>
+
+        <Label text="Chart:" fontSize="20" fontWeight="Bold" horizontalAlignment="center"></Label>
+
+
+    </StackLayout>
+</Page>

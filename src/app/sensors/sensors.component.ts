@@ -1,91 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject,AfterViewInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { SensorService } from './sensor.service';
-import {SensorMeasurementRepository} from '../modules/sensorMeasurementRepository';
+import { MeasurementService } from '../measurements/measurements.service';
+import { SensorMeasurementRepository } from '../modules/sensorMeasurementRepository';
 import { Measurement } from '../measurements/measurements.component';
 import { forkJoin } from 'rxjs';
-import {MeasurementService} from '../measurements/measurements.service';
+import { Page } from '@nativescript/core';  // Add this import for Page
+import { NativeScriptCommonModule, NativeScriptRouterModule } from '@nativescript/angular';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-sensors',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NativeScriptCommonModule, NativeScriptRouterModule],
   templateUrl: './sensors.component.html',
   styleUrls: ['./sensors.component.css'],
+  schemas: [NO_ERRORS_SCHEMA]
 })
-export class SensorsComponent implements OnInit {
-  constructor(private http: HttpClient, private sensorService: SensorService, private measurementService: MeasurementService) {}
-  SensorMeasurementRepository: SensorMeasurementRepository[];
+export class SensorsComponent implements OnInit, AfterViewInit {
+  public SensorMeasurementRepository: SensorMeasurementRepository[] = [];
 
+  // @ViewChild to access the Page component in the template
+  @ViewChild(Page, { static: false }) page: Page;
+
+  private sensorService = inject(SensorService);
+  private measurementService = inject(MeasurementService);
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     console.log("Loading data");
 
-   forkJoin({
-     sensors: this.sensorService.getAllSensors(),
-     measurements: this.measurementService.getAllMeasurements(),
-   }).subscribe({
-     next: ({ sensors, measurements }) => {
-       //console.log('Sensors:', sensors);
-       //console.log('Measurements:', measurements);
-       this.SensorMeasurementRepository = this.mapSensorsToRepositories(
-         sensors,
-         measurements
-       );
-     },
-     error: (err) => {
-       console.error('Error loading data:', err);
-     },
-   });
-}
 
+  }
 
-  private mapSensorsToRepositories(
-    sensors: Sensor[],
-    measurementsData: any // Use `any` or a more specific type based on the actual structure
-  ): SensorMeasurementRepository[] {
-    const measurements: Measurement[] = measurementsData?._embedded?.Measurements || []; // Access the Measurements array
-    console.log("mapping sensors to repositories");
-    return sensors.map((sensor) => {
-      const sensorMeasurements = measurements.filter(
-        (measurement) => measurement.sensorid === sensor.sensorid
-      );
-      return {
-        sensorid: sensor.sensorid,
-        sensorname: sensor.sensorname,
-        measurementList: sensorMeasurements,
-        latestMeasurement: sensorMeasurements[0],
-      };
-    });
+  ngAfterViewInit(): void {
+    // Ensure page frame is available after the view is loaded
+    if (this.page) {
+      this.page.on('loaded', () => {
+        if (__IOS__) {
+          const navigationController = this.page.frame.ios.controller;
+          navigationController.navigationBar.prefersLargeTitles = true;
+        }
+      });
+    }
   }
 
 
-  private getLatestMeasurement(measurements: Measurement[]): Measurement | null {
-    if (!measurements || measurements.length === 0) return null;
-    return measurements.reduce((latest, current) =>
-      this.convertToDate(current.measurementtime) > this.convertToDate(latest.measurementtime) ? current : latest
-    );
-  }
-
-  private convertToDate(dateString: string): Date | null {
-  const [time, date] = dateString.split('-');
-  const [hours, minutes] = time.split(':');
-  const [day, month, year] = date.split('.');
-
-  // Build a string in the format `yyyy-mm-ddThh:mm:ss`
-  const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours}:${minutes}:00`;
-
-  // Create a Date object from the formatted string
-  const dateObject = new Date(formattedDate);
-
-  // Check if the date is valid
-  if (isNaN(dateObject.getTime())) {
-    return null;  // Return null if the date is invalid
-  }
-
-  return dateObject;
-   }
 }
 
 export interface Sensor {
@@ -95,3 +57,4 @@ export interface Sensor {
   sensortype: number;
   sensorActive: boolean;
 }
+

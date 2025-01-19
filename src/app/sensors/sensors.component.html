@@ -1,17 +1,19 @@
-<div>
-    <h2>Measurements</h2>
-    <table>
-        <tr>
-            <th>Sensor Name</th>
-            <th>Temperature</th>
-            <th>Humidity</th>
-            <th>Time</th>
-        </tr>
-        <tr *ngFor="let sensor of SensorMeasurementRepository">
-            <td>{{ sensor.latestMeasurement?.sensorname }}</td>
-            <td>{{ sensor.latestMeasurement?.measurementtemperature }}</td>
-            <td>{{ sensor.latestMeasurement?.measurementhumidity }}</td>
-            <td>{{ sensor.latestMeasurement?.measurementtime }}</td>
-        </tr>
-    </table>
-</div>
+<Page>
+    <ActionBar title="Sensors">
+    </ActionBar>
+
+    <StackLayout>
+        <Label text="All Sensors" fontSize="20" fontWeight="Bold" horizontalAlignment="center"></Label>
+        <Label text="click on a sensor for details" fontSize="14" fontWeight="Normal" color="gray" horizontalAlignment="center" margin="5"></Label>
+        <ListView [items]="SensorMeasurementRepository">
+            <ng-template let-item="item">
+                <StackLayout>
+                    <Label fontWeight="Bold" [text]="item.sensorname"></Label>
+                    <Label [text]="item.latestMeasurement?.measurementtemperature"></Label>
+                    <Label [text]="item.latestMeasurement?.measurementhumidity"></Label>
+                    <Label [text]="item.latestMeasurement?.measurementtime"></Label>
+                </StackLayout>
+            </ng-template>
+        </ListView>
+    </StackLayout>
+</Page>
