@@ -31,8 +31,7 @@ export class SensorsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     console.log("Loading data");
-
-
+    this.SensorMeasurementRepository=this.sensorService.getSensorMeasurementRepository();
   }
 
   ngAfterViewInit(): void {
