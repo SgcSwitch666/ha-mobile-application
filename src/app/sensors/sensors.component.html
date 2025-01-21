@@ -2,12 +2,12 @@
     <ActionBar title="Sensors">
     </ActionBar>
 
-    <StackLayout>
+    <GridLayoi>
         <Label text="All Sensors" fontSize="20" fontWeight="Bold" horizontalAlignment="center"></Label>
         <Label text="click on a sensor for details" fontSize="14" fontWeight="Normal" color="gray" horizontalAlignment="center" margin="5"></Label>
         <ListView [items]="SensorMeasurementRepository">
             <ng-template let-item="item">
-                <StackLayout>
+                <StackLayout >
                     <Label fontWeight="Bold" [text]="item.sensorname"></Label>
                     <Label [text]="item.latestMeasurement?.measurementtemperature"></Label>
                     <Label [text]="item.latestMeasurement?.measurementhumidity"></Label>
@@ -15,5 +15,5 @@
                 </StackLayout>
             </ng-template>
         </ListView>
-    </StackLayout>
+    </GridLayoi>
 </Page>
