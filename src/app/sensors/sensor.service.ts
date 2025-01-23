@@ -30,6 +30,14 @@ getAllSensors(): Observable<Sensor[]> {
 
       return SensorMeasurementRepository;
       }
+
+  getSensorById(sensorId: number): Observable<Sensor | null> {
+    return this.getAllSensors().pipe(
+      map((sensors) => sensors.find((sensor) => sensor.sensorid === sensorId) || null)
+    );
+  }
+
+
   }
 
 

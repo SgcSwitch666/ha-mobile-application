@@ -1,19 +1,19 @@
 <Page>
-    <ActionBar title="Sensors">
-    </ActionBar>
+    <ActionBar title="Sensors"></ActionBar>
 
-    <GridLayoi>
-        <Label text="All Sensors" fontSize="20" fontWeight="Bold" horizontalAlignment="center"></Label>
-        <Label text="click on a sensor for details" fontSize="14" fontWeight="Normal" color="gray" horizontalAlignment="center" margin="5"></Label>
-        <ListView [items]="SensorMeasurementRepository">
+    <GridLayout rows="auto, auto, *">
+        <Label class="label-header" text="All Sensors" row="0"></Label>
+        <Label class="label-subheader" text="Click on a sensor for details" row="1"></Label>
+
+        <ListView [items]="SensorMeasurementRepository" row="2">
             <ng-template let-item="item">
-                <StackLayout >
-                    <Label fontWeight="Bold" [text]="item.sensorname"></Label>
-                    <Label [text]="item.latestMeasurement?.measurementtemperature"></Label>
-                    <Label [text]="item.latestMeasurement?.measurementhumidity"></Label>
-                    <Label [text]="item.latestMeasurement?.measurementtime"></Label>
+                <StackLayout class="sensor-item-container" (tap)="onSensorTap(item)">
+                    <Label class="sensor-item" [text]="item.sensorname"></Label>
+                    <Label class="sensor-details" [text]="'Temperature: ' + item.latestMeasurement?.measurementtemperature"></Label>
+                    <Label class="sensor-details" [text]="'Humidity: ' + item.latestMeasurement?.measurementhumidity"></Label>
+                    <Label class="sensor-details" [text]="'Time: ' + item.latestMeasurement?.measurementtime"></Label>
                 </StackLayout>
             </ng-template>
         </ListView>
-    </GridLayoi>
+    </GridLayout>
 </Page>

@@ -30,6 +30,7 @@ export class SensorsComponent implements OnInit, AfterViewInit {
   constructor(private http: HttpClient,
                 private sensorService: SensorService,
                 private measurementService: MeasurementService,
+                private router: Router
                 ) {}
 
   ngOnInit(): void {
@@ -51,9 +52,20 @@ export class SensorsComponent implements OnInit, AfterViewInit {
               });
   }
 
+onSensorTap(item: any) {
+    console.log('Sensor tapped');
+
+  if (!item || !item.sensorid) {
+    console.error('Sensor ID is missing:', item);
+    return;
+  }
+  this.router.navigate(['/item', item.sensorid]);
+}
+
+
   private mapSensorsToRepositories(
-        sensors: any[],  // Update this with the correct types based on your API response
-        measurementsData: any  // Use a specific type instead of `any`
+        sensors: any[],
+        measurementsData: any
       ): SensorMeasurementRepository[] {
         const measurements: Measurement[] = measurementsData?._embedded?.Measurements || [];
         return sensors.map((sensor) => {

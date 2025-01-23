@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { SensorsComponent } from './sensors/sensors.component';
 import { SensorDetail } from './sensors/sensor-detail.component';
+import { RouterModule } from '@angular/router';
 
 
 export const routes: Routes = [

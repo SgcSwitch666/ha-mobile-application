@@ -1,0 +1,25 @@
+.label-header {
+    font-size: 20;
+    font-weight: Bold;
+    horizontal-align: center;
+}
+
+.label-subheader {
+    font-size: 14;
+    font-weight: Normal;
+    color: gray;
+    horizontal-align: center;
+    margin: 5;
+}
+
+.sensor-item {
+    font-weight: Bold;
+}
+
+.sensor-details {
+    margin-top: 2;
+}
+
+.sensor-item-container {
+    padding-left: 40px;
+}

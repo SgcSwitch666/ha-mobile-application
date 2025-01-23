@@ -8,14 +8,15 @@ import { Sensor } from './sensors.component'; // Annahme: Sensor-Modell wird hie
 
 @Component({
   selector: 'sensor-detail',
+  standalone: true,
   templateUrl: './sensor-detail.component.html',
   styleUrls: ['./sensor-detail.component.css'],
   imports: [NativeScriptCommonModule],
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class SensorDetail implements OnInit {
-  sensorDetails: Sensor | null = null; // Für die Sensor-Details
-  last10Measurements: Measurement[] = []; // Für die letzten 10 Messungen
+  sensorDetails: Sensor | null = null;
+  last10Measurements: Measurement[] = [];
 
   constructor(
     private sensorService: SensorService,
@@ -24,25 +25,28 @@ export class SensorDetail implements OnInit {
   ) {}
 
   ngOnInit(): void {
+      console.log('Route paramMap:', this.route.snapshot.paramMap);
     const sensorId = Number(this.route.snapshot.paramMap.get('id'));
+    console.log('Sensor ID from URL:', sensorId);
 
-    // Abrufen der Sensor-Details basierend auf der ID
     this.sensorService.getAllSensors().subscribe((sensors) => {
       this.sensorDetails = sensors.find((sensor) => sensor.sensorid === sensorId) || null;
 
       if (this.sensorDetails) {
-        // Wenn der Sensor gefunden wurde, die letzten 10 Messungen abrufen
         this.measurementService.getAllMeasurements().subscribe((measurements) => {
           const sensorMeasurements = measurements.filter(
             (measurement) => measurement.sensorid === this.sensorDetails!.sensorid
           );
           this.last10Measurements = this.getLatestTenMeasurements(sensorMeasurements);
+          console.log("last 10 measurements: ",this.last10Measurements);
         });
       }
+        else{
+            console.log("error, no measurements found");
+           }
     });
   }
 
-  // Funktion, um die letzten 10 Messungen zu holen
   private getLatestTenMeasurements(measurements: Measurement[]): Measurement[] {
     return measurements
       .sort((a, b) =>
