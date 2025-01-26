@@ -17,6 +17,8 @@
     "@nativescript/angular": "^19.0.0",
     "@nativescript/core": "~8.8.0",
     "lodash": "^4.17.21",
+    "nativescript-chart": "^0.0.26",
+    "nativescript-ui-chart": "^15.2.3",
     "rxjs": "~7.8.0",
     "zone.js": "~0.15.0"
   },

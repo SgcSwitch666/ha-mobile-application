@@ -9,14 +9,11 @@ import { SensorMeasurementRepository } from '../modules/sensorMeasurementReposit
 import { Measurement } from '../measurements/measurements.component';
 import { forkJoin } from 'rxjs';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class SensorService {
     private apiUrl = 'http://192.168.0.104:8081/api/sensors';
-   // private measurementService = inject(MeasurementService);
 
   constructor(private http: HttpClient,
       private measurementService: MeasurementService) { }
@@ -25,20 +22,16 @@ getAllSensors(): Observable<Sensor[]> {
     return this.http.get<Sensor[]>(this.apiUrl);
   }
   getSensorMeasurementRepository() : SensorMeasurementRepository[]{
-      let SensorMeasurementRepository : SensorMeasurementRepository[];
-
-
-      return SensorMeasurementRepository;
-      }
+    let SensorMeasurementRepository : SensorMeasurementRepository[];
+    return SensorMeasurementRepository;
+  }
 
   getSensorById(sensorId: number): Observable<Sensor | null> {
     return this.getAllSensors().pipe(
       map((sensors) => sensors.find((sensor) => sensor.sensorid === sensorId) || null)
     );
   }
-
-
-  }
+}
 
 
 

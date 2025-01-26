@@ -1,17 +1,32 @@
-<Page>
+<Page xmlns:chart="nativescript-chart">
     <ActionBar title="Sensors"></ActionBar>
-
     <GridLayout rows="auto, auto, *">
         <Label class="label-header" text="All Sensors" row="0"></Label>
-        <Label class="label-subheader" text="Click on a sensor for details" row="1"></Label>
-
         <ListView [items]="SensorMeasurementRepository" row="2">
             <ng-template let-item="item">
-                <StackLayout class="sensor-item-container" (tap)="onSensorTap(item)">
+                <StackLayout class="sensor-item-container">
                     <Label class="sensor-item" [text]="item.sensorname"></Label>
-                    <Label class="sensor-details" [text]="'Temperature: ' + item.latestMeasurement?.measurementtemperature"></Label>
-                    <Label class="sensor-details" [text]="'Humidity: ' + item.latestMeasurement?.measurementhumidity"></Label>
-                    <Label class="sensor-details" [text]="'Time: ' + item.latestMeasurement?.measurementtime"></Label>
+                    <Label class="sensor-item" text="latest measurement:"></Label>
+                    <Label class="sensor-details" [text]="'Temperature: ' + (item.latestMeasurement?.measurementtemperature || 'N/A')"></Label>
+                    <Label class="sensor-details" [text]="'Humidity: ' + (item.latestMeasurement?.measurementhumidity || 'N/A')"></Label>
+                    <Label class="sensor-details" [text]="'Time: ' + (item.latestMeasurement?.measurementtime || 'N/A')"></Label>
+                    <Label></Label>
+
+                    <RadCartesianChart [series]="chartSeries" *ngIf="chartSeries.length > 0" height="300">
+                        <CategoryAxis labelField="category"></CategoryAxis>
+                        <ValueAxis></ValueAxis>
+                    </RadCartesianChart>
+
+
+                    <Label class="sensor-item" text="latest 10 measurements:"></Label>
+                    <StackLayout *ngIf="item.latestTenMeasurements?.length">
+                        <StackLayout *ngFor="let measurement of item.latestTenMeasurements">
+                            <Label class="measurement-details" [text]="'Temperature: ' + measurement.measurementtemperature"></Label>
+                            <Label class="measurement-details" [text]="'Humidity: ' + measurement.measurementhumidity"></Label>
+                            <Label class="measurement-details" [text]="'Time: ' + measurement.measurementtime"></Label>
+                            <Label></Label>
+                        </StackLayout>
+                    </StackLayout>
                 </StackLayout>
             </ng-template>
         </ListView>

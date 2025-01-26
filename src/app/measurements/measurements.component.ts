@@ -7,7 +7,6 @@ import { Component } from '@angular/core';
 })
 export class MeasurementsComponent {
   public measurements$: Measurement[] = [];
-
 }
 
 export interface Measurement {

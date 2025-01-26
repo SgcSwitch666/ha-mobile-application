@@ -5,4 +5,6 @@ export interface SensorMeasurementRepository {
     sensorname: string;
     measurementList: Measurement[];
     latestMeasurement?: Measurement | null;
+    latestTenMeasurements: Measurement[] | null;
+    chartSeries: any[];
   }
